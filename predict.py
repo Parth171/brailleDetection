@@ -1,16 +1,59 @@
 from ultralytics import YOLO
 
-model = YOLO('./runs/classify/train3/weights/last.pt')  # load a custom model
+import cv2
 
-results = model('C:/Users/User/PycharmProjects/brailleDetection/data/braille_data/val/a/a1.jpg')  # predict on an image
-
-
-names = results[0].names
+model = YOLO('./runs/classify/train7/weights/best.pt')  # load a custom model
 
 
-probs = results[0].probs.tolist()
+vid = cv2.VideoCapture(0) # making the video variable and defining the webcam
 
-print(names)
-print(results)
 
-# [0.24236248433589935, 0.26641324162483215, 0.24460835754871368, 0.24661587178707123]
+
+while True:
+
+    _, frame = vid.read() # reading the video variable and storing it in frame variable
+    cv2.imshow("Camera", frame)
+
+    results = model(frame)  # predict on an image
+
+    names = results[0].names
+
+    probs = results[0].probs.tolist()
+
+    probability = 0
+    index = 0
+
+    #print(names)
+    #print(probs)
+
+    for i in range(len(probs)):
+        if probs[i] > probability:
+            probability = probs[i]
+
+    for i in range(len(probs)):
+        if probs[i] == probability:
+            index = i
+
+    letter = names[index]
+
+    if probability < 0.6:
+        print("no letter detected")
+
+    else:
+
+        print(f"The letter shown is: {letter}")
+
+
+    if cv2.waitKey(1) == ord("e"):
+        break
+
+vid.release()  # releases the resource (webcam in this case)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+
+
