@@ -23,8 +23,8 @@ while True:
     probability = 0
     index = 0
 
-    #print(names)
-    #print(probs)
+    #print(names) aaa
+    #print(probs)sss
 
     for i in range(len(probs)):
         if probs[i] > probability:
