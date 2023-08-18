@@ -50,6 +50,7 @@ while True:
 vid.release()  # releases the resource (webcam in this case)
 cv2.destroyAllWindows()
 
+# it can detect 'b' fine
 
 
 
